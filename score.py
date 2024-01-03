@@ -27,7 +27,7 @@ def load_instance(inst_name):
 
     # reading the file
     inst[vals[0]] = {"x":float(vals[1]),"y":float(vals[2]),"wstart":float(vals[4]),"wend":float(vals[5])}
-    while(len(vals)>0 and vals[0].isdigit() and int(vals[0])<10):
+    while(len(vals)>0 and vals[0].isdigit() and int(vals[0])<10): # 0 in distma for padding
         inst[vals[0]] = {"x":float(vals[1]),"y":float(vals[2]),"wstart":float(vals[4]),"wend":float(vals[5])}
         vals = list(filter(None,f.readline().split(" ")))
 
@@ -81,6 +81,7 @@ def compute_score_with_mat(instance,sol_list,dist_mat):
     distance = 0
     duree = 0
     nb_violation = 0
+    coefficient=1.5
     for i in range(len(sol_list)-1):
         distance += dist_mat[int(sol_list[i]), int(sol_list[i+1])]
         duree += dist_mat[int(sol_list[i]), int(sol_list[i+1])]
@@ -105,7 +106,7 @@ def compute_score_with_mat(instance,sol_list,dist_mat):
     # print(distance)
     # print(duree)
     # print(nb_violation)
-    return distance
+    return distance+coefficient*nb_violation
 
 
 # compute the score from the instance and the solution given in argument
@@ -152,7 +153,8 @@ def main():
     #print(load_solution(inst1_sol))
     #print(load_instance(inst1))
     #print(load_instance(inst_concours))
-    print(compute_dist_mat(load_instance(inst1)))
+    print(load_instance(inst1))
+    #print(compute_dist_mat(load_instance(inst1)))
     
     pass
     ### functions used to compute the score of a solution
