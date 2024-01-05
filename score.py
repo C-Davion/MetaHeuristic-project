@@ -27,7 +27,7 @@ def load_instance(inst_name):
 
     # reading the file
     inst[vals[0]] = {"x":float(vals[1]),"y":float(vals[2]),"wstart":float(vals[4]),"wend":float(vals[5])}
-    while(len(vals)>0 and vals[0].isdigit() and int(vals[0])<10): # 0 in distma for padding
+    while(len(vals)>0 and vals[0].isdigit() and int(vals[0])<999): # 0 in distma for padding
         inst[vals[0]] = {"x":float(vals[1]),"y":float(vals[2]),"wstart":float(vals[4]),"wend":float(vals[5])}
         vals = list(filter(None,f.readline().split(" ")))
 
