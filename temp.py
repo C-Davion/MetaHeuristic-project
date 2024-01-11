@@ -20,7 +20,7 @@ def first_sol(instance):
         raise ValueError("It is not a hamiltonian cycle")
 
 
-def temperature_heuristic(instance,sol_init,dist_mat,tries=100,temp_init=80,temp_end=5,update_t=None,voisin=None):
+def temperature_heuristic(instance,sol_init,dist_mat,tries=10,temp_init=80,temp_end=5,update_t=None,voisin=None):
     temp=temp_init
     curr_sol=sol_init
     curr_score=compute_score_with_mat(instance,curr_sol,dist_mat)
@@ -41,6 +41,8 @@ def temperature_heuristic(instance,sol_init,dist_mat,tries=100,temp_init=80,temp
         if rand()<proba:
             curr_sol=next_sol
             score_list.append(next_score)
+        else:
+            score_list.append(score_list[-1]) #else doesn't show that we retain de same solution
         if update_t is None:
             temp=temp-(temp_init-temp_end)/tries
         else:
@@ -58,19 +60,21 @@ def main():
     instance=load_instance(inst1)
     keys=instance.keys()
     keys=list(keys)
-    print(type(keys[0]))
+    #print(type(keys[0]))
 
     mat1=array(mat1) #convert to numpy array so that score doens't f up
     sol_init=first_sol(instance)
-    print(sol_init)
+    #print(sol_init)
     print(compute_score_with_mat(instance,sol_init,mat1))
-'''
-sol,score_list,temp_list=temperature_heuristic(instance,sol_init,mat1)   
+
+    sol,score_list,temp_list=temperature_heuristic(instance,sol_init,mat1)   
     plt.plot(temp_list,score_list)
-    plt.title(f'Score as a function of temp, with{sol} as the solution for {inst1}')
+    plt.gca().invert_xaxis()
+    plt.ylabel("score")
+    plt.xlabel("temperature")
+    plt.title(f'Score as a function of temp, with {sol} as the solution for {inst1}')
     plt.show()
 
-'''
     
 
     
