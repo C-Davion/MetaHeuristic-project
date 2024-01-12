@@ -20,7 +20,7 @@ def first_sol(instance):
         raise ValueError("It is not a hamiltonian cycle")
 
 
-def temperature_heuristic(instance,sol_init,dist_mat,tries=10,temp_init=80,temp_end=5,update_t=None,voisin=None):
+def temperature_heuristic(instance,sol_init,dist_mat,tries=1000,temp_init=200,temp_end=10,update_t=None,voisin=None):
     temp=temp_init
     curr_sol=sol_init
     curr_score=compute_score_with_mat(instance,curr_sol,dist_mat)
@@ -37,7 +37,8 @@ def temperature_heuristic(instance,sol_init,dist_mat,tries=10,temp_init=80,temp_
         if next_score<score_list[-1]:
             proba=1
         else:
-            proba=exp(-(next_score-curr_score)/temp)
+            proba=exp(-(next_score-score_list[-1])/temp)
+            print(proba)
         if rand()<proba:
             curr_sol=next_sol
             score_list.append(next_score)
@@ -68,10 +69,12 @@ def main():
     print(compute_score_with_mat(instance,sol_init,mat1))
 
     sol,score_list,temp_list=temperature_heuristic(instance,sol_init,mat1)   
-    plt.plot(temp_list,score_list)
-    plt.gca().invert_xaxis()
+    plt.plot([i for i in range(len(score_list))],score_list)
+    # plt.gca().invert_xaxis(); probleme de proba trop elevel; augmente le nombre d iteration. bien baisser les probas. fonction de score: afficher le score
+    # pour une meme heuristiaue;courbe+ Intervalle de confiance: avec plusieur fonction de voisinage; et plusieur jeux de parametre.
+    
     plt.ylabel("score")
-    plt.xlabel("temperature")
+    plt.xlabel("iteration") 
     plt.title(f'Score as a function of temp, with {sol} as the solution for {inst1}')
     plt.show()
 

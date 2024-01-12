@@ -76,12 +76,12 @@ def compute_dist_mat(instance):
                     mat_dist[int(i),int(j)] = mat_dist[int(i),int(k)] + mat_dist[int(k),int(j)] 
     return mat_dist
 
-# compute the score using the distance matrix
+# compute the score using the distance matrix// prendre en compte a quelle la contrainte est violee. ajuster les param
 def compute_score_with_mat(instance,sol_list,dist_mat):
     distance = 0
     duree = 0
     nb_violation = 0
-    coefficient=1.5
+    coefficient=1000
     for i in range(len(sol_list)-1):
         distance += dist_mat[int(sol_list[i]), int(sol_list[i+1])]
         duree += dist_mat[int(sol_list[i]), int(sol_list[i+1])]
