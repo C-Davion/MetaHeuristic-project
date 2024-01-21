@@ -82,7 +82,9 @@ def compute_score_with_mat(instance,sol_list,dist_mat):
     duree = 0
     nb_violation = 0
     coefficient=1000
+    coefftime=5
     score_violation=0
+    A=[]
     # print("debut")
     for i in range(len(sol_list)-1):
         distance += dist_mat[int(sol_list[i]), int(sol_list[i+1])]
@@ -95,6 +97,7 @@ def compute_score_with_mat(instance,sol_list,dist_mat):
         if (duree > end_window):
             nb_violation+=1
             score_violation+=(duree-end_window)
+            A.append(sol_list[i])
 
     # print("fin",nb_violation)
 
@@ -107,13 +110,15 @@ def compute_score_with_mat(instance,sol_list,dist_mat):
         duree = next_start
     if (duree > end_window):
         nb_violation+=1
+        A.append(sol_list[i])
     
 
     # can be used for debug
     # print(distance)
     # print(duree)
     # print(nb_violation)
-    return [distance+coefficient*score_violation//100,nb_violation]
+    #print(distance,coefficient*nb_violation,A)
+    return [coefficient*nb_violation+distance,nb_violation]
 
 
 # compute the score from the instance and the solution given in argument
