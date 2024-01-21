@@ -76,12 +76,14 @@ def compute_dist_mat(instance):
                     mat_dist[int(i),int(j)] = mat_dist[int(i),int(k)] + mat_dist[int(k),int(j)] 
     return mat_dist
 
-# compute the score using the distance matrix
+# compute the score using the distance matrix// prendre en compte a quelle la contrainte est violee. ajuster les param
 def compute_score_with_mat(instance,sol_list,dist_mat):
     distance = 0
     duree = 0
     nb_violation = 0
-    coefficient=1.5
+    coefficient=1000
+    score_violation=0
+    # print("debut")
     for i in range(len(sol_list)-1):
         distance += dist_mat[int(sol_list[i]), int(sol_list[i+1])]
         duree += dist_mat[int(sol_list[i]), int(sol_list[i+1])]
@@ -89,8 +91,12 @@ def compute_score_with_mat(instance,sol_list,dist_mat):
         end_window = instance[sol_list[i+1]]["wend"]
         if (duree < next_start):
             duree = next_start
+            # print("duree",i,duree)
         if (duree > end_window):
             nb_violation+=1
+            score_violation+=(duree-end_window)
+
+    # print("fin",nb_violation)
 
 
     distance += dist_mat[int(sol_list[-1]), int(sol_list[0])]
@@ -101,12 +107,13 @@ def compute_score_with_mat(instance,sol_list,dist_mat):
         duree = next_start
     if (duree > end_window):
         nb_violation+=1
+    
 
     # can be used for debug
     # print(distance)
     # print(duree)
     # print(nb_violation)
-    return distance+coefficient*nb_violation
+    return [distance+coefficient*score_violation//100,nb_violation]
 
 
 # compute the score from the instance and the solution given in argument
